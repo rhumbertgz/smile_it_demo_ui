@@ -1,0 +1,6 @@
+<div class="jumbotron">
+  <h2><%= gettext "Welcome to %{name}!", name: "Marlon" %></h2>
+  <p class="lead"><b>M</b>ulti-<b>A</b>gent <b>R</b>einforcement <b>L</b>earning <b>O</b>n <b>N</b>etworks</p>
+</div>
+
+<div id="clusterDiagram" class="row marketing diagram"></div>

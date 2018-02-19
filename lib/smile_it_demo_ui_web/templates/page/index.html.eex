@@ -3,4 +3,18 @@
   <p class="lead"><b>M</b>ulti-<b>A</b>gent <b>R</b>einforcement <b>L</b>earning <b>O</b>n <b>N</b>etworks</p>
 </div>
 
-<div id="clusterDiagram" class="row marketing diagram"></div>
+<h3>Cluster visualization</h2>
+<div id="clusterDiagram" class="row  diagram"></div>
+
+ <h3>Cluster schedule</h2>
+ <div class="row  schedule">
+  <table id="schedule-timeline"></table>
+</div>
+<div class="legend">
+    <span id="processing"></span>
+    <p> Processing</p>
+    <span id="communicating"></span>
+    <p>Communicating</p>
+    <span id="nothing"></span>
+    <p>Doing nothing</p>
+  </div>

@@ -6,22 +6,12 @@
 import {Socket} from "phoenix"
 
 let socket = new Socket("/socket", {params: {token: window.userToken}})
-export var clusterView = {canvas: "test"}
+export var clusterView = {canvas: ""}
+export var scheduleView = {addNodes: "", removeNode: "", setTimeline: ""}
 
 socket.connect()
 
-// Now that you are connected, you can join channels with a topic:
 let channel = socket.channel("cluster:view", {})
-
-// let chatInput         = document.querySelector("#chat-input")
-// let messagesContainer = document.querySelector("#messages")
-
-// chatInput.addEventListener("keypress", event => {
-//   if(event.keyCode === 13){
-//     channel.push("new_msg", {body: chatInput.value})
-//     chatInput.value = ""
-//   }
-// })
 
 channel.on("join", payload => {
   console.log("Node %s joined successfully", payload.node) 
@@ -29,6 +19,9 @@ channel.on("join", payload => {
   var newNode = { key: payload.key, node: payload.node, status: payload.status, parent: payload.parent };
   clusterView.canvas.model.addNodeData(newNode);
   clusterView.canvas.commitTransaction("add new node");
+  var nodes = [{name: payload.node, datasets:[]}];
+  scheduleView.addNodes(nodes);
+
 })
 
 channel.on("leave", payload => {
@@ -37,6 +30,7 @@ channel.on("leave", payload => {
   var node = clusterView.canvas.findNodeForKey(payload.node);
   clusterView.canvas.model.removeNodeData(node.data);
   clusterView.canvas.commitTransaction("remove node");
+  scheduleView.removeNode(payload.node);
 })
 
 channel.on("update", payload => {
@@ -45,16 +39,19 @@ channel.on("update", payload => {
   var node = clusterView.canvas.findNodeForKey(payload.node);
   clusterView.canvas.model.setDataProperty(node.data, "status", payload.status);
   clusterView.canvas.commitTransaction("remove node status");
+  console.log(payload.history);
+  var node = {name: payload.node, datasets: payload.history}
+  scheduleView.setTimeline(node);
 })
 
 channel.join()
   .receive("ok", resp => { 
                           var model = { "class": "go.TreeModel", "nodeDataArray": resp.nodes};
                           clusterView.canvas.model = go.Model.fromJson(model)
+                          scheduleView.addNodes(resp.states);
                         })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
 
 export default socket
-// export var clusterView
 

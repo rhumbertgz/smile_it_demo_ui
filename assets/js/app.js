@@ -18,9 +18,12 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-import socket, {clusterView} from "./socket"
+import socket, {clusterView, scheduleView} from "./socket"
 import { initialize } from "./view"
-
+import { addNodes, removeNode, setTimeline } from "./statistics"
+scheduleView.addNodes = addNodes
+scheduleView.removeNode = removeNode
+scheduleView.setTimeline = setTimeline
 initialize(clusterView)
 
 

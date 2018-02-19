@@ -62,6 +62,7 @@ export function initialize(view){
         $(go.Shape, "Rectangle",
           {
             name: "SHAPE", fill: "white", stroke: null,
+            desiredSize: new go.Size(200, 65),
             // set the port properties:
             portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"
           }),

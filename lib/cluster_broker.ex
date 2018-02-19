@@ -25,7 +25,7 @@ defmodule SmileItDemoUi.ClusterBroker do
 
     def handle_cast({:join, clusterNode, :master}, {_master, nodes}) do
       # broadcast here  
-      IO.puts "Master node #{clusterNode}  joined the cluster!"
+    #   IO.puts "Master node #{clusterNode}  joined the cluster!"
       SmileItDemoUi.StateStore.add(clusterNode, {DateTime.utc_now(), "Doing nothing",})
       SmileItDemoUiWeb.Endpoint.broadcast "cluster:view", "join", %{ "key" => clusterNode,"node" => clusterNode, "status" => "Doing nothing" ,"parent" => -1}
       {:noreply, {clusterNode, Map.put_new(nodes, clusterNode, %{parent: -1, status: "online"})}}
@@ -33,7 +33,7 @@ defmodule SmileItDemoUi.ClusterBroker do
 
     def handle_cast({:join, clusterNode, :slave}, {master, nodes}) do
         # broadcast here  
-        IO.puts "Slave node #{clusterNode}  joined the cluster!"
+        # IO.puts "Slave node #{clusterNode}  joined the cluster!"
         SmileItDemoUi.StateStore.add(clusterNode, { DateTime.utc_now(), "Doing nothing"})
         SmileItDemoUiWeb.Endpoint.broadcast "cluster:view", "join", %{ "key" => clusterNode,"node" => clusterNode, "status" => "Doing nothing" ,"parent" => master}
         {:noreply, {master, Map.put_new(nodes, clusterNode, %{parent: master, status: "online"})}}
@@ -41,7 +41,7 @@ defmodule SmileItDemoUi.ClusterBroker do
 
     def handle_cast({:leave, clusterNode}, {master, nodes}) do
         # broadcast here  
-        IO.puts "Node #{clusterNode} leaved the cluster!"
+        # IO.puts "Node #{clusterNode} leaved the cluster!"
         SmileItDemoUi.StateStore.delete(clusterNode)
         SmileItDemoUiWeb.Endpoint.broadcast "cluster:view", "leave", %{ "node" => clusterNode}
         {:noreply, {master, Map.delete(nodes, clusterNode)}}
@@ -49,7 +49,7 @@ defmodule SmileItDemoUi.ClusterBroker do
 
     def handle_cast({:update, clusterNode, status}, {master, nodes}) do
         # broadcast here  
-        IO.puts "Node #{clusterNode} status= #{status} updated!"
+        # IO.puts "Node #{clusterNode} status= #{status} updated!"
         SmileItDemoUi.StateStore.add(clusterNode, {DateTime.utc_now(), status})
         history = build_dataset(clusterNode)
         SmileItDemoUiWeb.Endpoint.broadcast "cluster:view", "update", %{ "node" => clusterNode, "status" => status, "history" => history }

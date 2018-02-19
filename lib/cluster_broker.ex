@@ -59,8 +59,6 @@ defmodule SmileItDemoUi.ClusterBroker do
 
     defp build_dataset(clusterNode) do
         [first | states] = clusterNode |> SmileItDemoUi.StateStore.get |> Enum.reverse
-        # IO.inspect first
-        # IO.inspect states
         build_chart_dataset(states, first, [])
     end    
 

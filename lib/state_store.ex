@@ -26,8 +26,7 @@ defmodule SmileItDemoUi.StateStore do
       states =  
         case SmileItDemoUi.StateStore.get(node) do
          list -> [value | list]
-        end 
-      IO.inspect states    
+        end   
       Agent.update(StateStore, &Map.put(&1, node, states))
     end
 

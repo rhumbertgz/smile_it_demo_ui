@@ -84,6 +84,9 @@ function initChart(canvas, node){
           datasets: node.datasets,
         },
         options: {
+          animation: {
+                duration: 0
+          },
           tooltips: {enabled: false},
           legend: {display :false},
           scales: {
